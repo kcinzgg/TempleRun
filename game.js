@@ -422,7 +422,7 @@ class AudioManager {
     _loadBackgroundMusicFiles() {
         // 使用单一的背景音乐文件
         this.musicFile = {
-            path: './bgm.mp3',
+            path: './bgm2.mp3',
             name: '背景音乐'
         };
 
@@ -1176,6 +1176,7 @@ class Game {
 
         // UI Elements
         this.scoreElement = document.getElementById('score');
+        this.scoreContainer = document.getElementById('score-container'); // 用于特效
         this.finalScoreElement = document.getElementById('final-score');
         this.gameOverScreen = document.getElementById('game-over-screen');
         this.muteBtn = document.getElementById('mute-btn');
@@ -2008,12 +2009,111 @@ class Game {
     }
 
     _triggerScoreEffect(isBonus = false) {
-        const effectClass = isBonus ? 'bonus-score-effect' : 'score-effect';
-        this.scoreElement.classList.add(effectClass);
-        // Remove the class after the animation completes
+        console.log('🎯 触发得分特效，当前分数:', this.score, '奖励金币:', isBonus);
+        
+        // 先更新基础分数段颜色
+        this._updateScoreLevel();
+        
+        // 清除之前的动画效果类
+        this.scoreContainer.classList.remove(
+            'score-low', 'score-medium', 'score-high', 
+            'score-ultra', 'score-legendary', 'score-bonus'
+        );
+        
+        let effectClass;
+        let duration = 300;
+        
+        if (isBonus) {
+            // 奖励金币使用彩虹特效
+            effectClass = 'score-bonus';
+            duration = 300; // 彩虹动画持续时间
+        } else {
+            // 根据当前总分数选择动画效果
+            if (this.score < 500) {
+                effectClass = 'score-low';        // 绿色
+            } else if (this.score < 1500) {
+                effectClass = 'score-medium';     // 蓝色
+            } else if (this.score < 3000) {
+                effectClass = 'score-high';       // 黄色
+            } else if (this.score < 5000) {
+                effectClass = 'score-ultra';      // 橙色
+            } else {
+                effectClass = 'score-legendary';  // 紫色
+                duration = 400; // 传奇分数效果持续更久
+            }
+        }
+        
+        console.log('🎨 应用特效类:', effectClass, '持续时间:', duration + 'ms');
+        this.scoreContainer.classList.add(effectClass);
+        
+        // 强制触发重绘
+        this.scoreContainer.offsetHeight;
+        
+        // 根据分数段播放不同音调的音效
+        this._playScoreSound(effectClass, isBonus);
+        
+        // 移除动画效果类，但保持基础颜色类
         setTimeout(() => {
-            this.scoreElement.classList.remove(effectClass);
-        }, 300);
+            this.scoreContainer.classList.remove(effectClass);
+            console.log('🎨 移除特效类:', effectClass);
+        }, duration);
+    }
+    
+    _updateScoreLevel() {
+        // 清除所有基础分数段颜色类
+        this.scoreContainer.classList.remove(
+            'score-level-low', 'score-level-medium', 'score-level-high', 
+            'score-level-ultra', 'score-level-legendary'
+        );
+        
+        // 根据当前分数添加对应的基础颜色类
+        let levelClass;
+        if (this.score < 500) {
+            levelClass = 'score-level-low';
+        } else if (this.score < 1500) {
+            levelClass = 'score-level-medium';
+        } else if (this.score < 3000) {
+            levelClass = 'score-level-high';
+        } else if (this.score < 5000) {
+            levelClass = 'score-level-ultra';
+        } else {
+            levelClass = 'score-level-legendary';
+        }
+        
+        this.scoreContainer.classList.add(levelClass);
+        console.log('🎨 更新分数段颜色:', levelClass);
+    }
+    
+    _playScoreSound(effectClass, isBonus) {
+        if (isBonus) {
+            // 奖励金币音效更高亢
+            this.audioManager.playSound('coin', 0.9);
+        } else {
+            // 根据分数段调整音效音调
+            let volume = 0.6;
+            switch(effectClass) {
+                case 'score-low':
+                    volume = 0.5;
+                    break;
+                case 'score-medium':
+                    volume = 0.6;
+                    break;
+                case 'score-high':
+                    volume = 0.7;
+                    break;
+                case 'score-ultra':
+                    volume = 0.8;
+                    break;
+                case 'score-legendary':
+                    volume = 0.9;
+                    // 传奇分数播放双重音效
+                    setTimeout(() => {
+                        this.audioManager.playSound('coin', 0.7);
+                    }, 100);
+                    break;
+            }
+            this.audioManager.playSound('coin', volume);
+        }
     }
 
     // 初始化游戏状态（用于游戏首次启动，保留生成的障碍物）
@@ -2024,6 +2124,9 @@ class Game {
         this.scoreElement.innerText = 0;
         this.gameOverScreen.style.display = 'none';
         this.gameStartTime = Date.now(); // 设置游戏开始时间
+        
+        // 更新分数段颜色
+        this._updateScoreLevel();
         
         // Reset difficulty
         this.runSpeed = this.initialRunSpeed;
@@ -2079,6 +2182,9 @@ class Game {
         this.scoreElement.innerText = 0;
         this.gameOverScreen.style.display = 'none';
         this.gameStartTime = Date.now(); // 重新设置游戏开始时间
+        
+        // 更新分数段颜色
+        this._updateScoreLevel();
         
         // Reset difficulty
         this.runSpeed = this.initialRunSpeed;
