@@ -1367,7 +1367,7 @@ class Game {
         const loader = new GLTFLoader();
         loader.load(
             // Using a CDN link for the model
-            'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/RobotExpressive/RobotExpressive.glb',
+            './models/RobotExpressive.glb',
             (gltf) => {
                 const model = gltf.scene;
                 model.scale.set(0.4, 0.4, 0.4);
