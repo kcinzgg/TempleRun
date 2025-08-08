@@ -1,0 +1,213 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
+    touch-action: none; /* 防止移动端滚动和缩放 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#game-canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    touch-action: none; /* 防止触摸手势干扰 */
+}
+
+#score-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 2em;
+    font-family: sans-serif;
+    text-shadow: 2px 2px 4px #000000;
+    transition: transform 0.1s ease-out, color 0.1s ease-out;
+}
+
+#score-container.score-effect {
+    transform: scale(1.5);
+    color: #ffff00;
+}
+
+#score-container.bonus-score-effect {
+    transform: scale(2.0);
+    color: #ff6600;
+    text-shadow: 0 0 10px #ff6600;
+}
+
+
+#game-over-screen {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    font-family: sans-serif;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid white;
+}
+
+#game-over-screen h1 {
+    margin: 0 0 10px 0;
+    font-size: 3em;
+}
+
+#game-over-screen p {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+#audio-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+#audio-controls button {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#audio-controls button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+#audio-controls button:active {
+    transform: scale(0.95);
+}
+
+#audio-prompt {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid white;
+    font-family: sans-serif;
+    font-size: 14px;
+    z-index: 100;
+    animation: pulse 2s infinite;
+    transition: opacity 0.3s ease;
+}
+
+#audio-prompt.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
+
+/* 移动端控制提示 */
+#mobile-controls-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid white;
+    font-family: sans-serif;
+    z-index: 200;
+    display: none; /* 默认隐藏，JavaScript控制显示 */
+}
+
+.control-hint {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.gesture-icon {
+    font-size: 24px;
+    margin-right: 15px;
+    width: 40px;
+    text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    #score-container {
+        font-size: 1.5em;
+        top: 10px;
+        left: 10px;
+    }
+    
+    #audio-controls {
+        top: 10px;
+        right: 10px;
+    }
+    
+    #audio-controls button {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    #game-over-screen h1 {
+        font-size: 2em;
+    }
+    
+    #game-over-screen p {
+        font-size: 1.2em;
+    }
+    
+    #audio-prompt {
+        bottom: 10px;
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+    
+    .desktop-hint {
+        display: none;
+    }
+    
+    .mobile-hint {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .desktop-hint {
+        display: block;
+    }
+    
+    .mobile-hint {
+        display: none;
+    }
+}

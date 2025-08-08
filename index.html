@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Temple Run Clone</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#b8e6ff">
+</head>
+<body>
+    <canvas id="game-canvas"></canvas>
+    <div id="score-container">Score: <span id="score">0</span></div>
+    <div id="audio-controls">
+        <button id="mute-btn">🔊</button>
+        <button id="music-btn">🎵</button>
+    </div>
+    <div id="audio-prompt">
+        <p>🔊 点击屏幕开始游戏</p>
+    </div>
+    <div id="mobile-controls-hint">
+        <div class="control-hint">
+            <div class="gesture-icon">⬅️➡️</div>
+            <span>滑动切换车道</span>
+        </div>
+        <div class="control-hint">
+            <div class="gesture-icon">⬆️</div>
+            <span>向上滑动跳跃</span>
+        </div>
+        <div class="control-hint">
+            <div class="gesture-icon">👆</div>
+            <span>点击跳跃</span>
+        </div>
+    </div>
+    <div id="game-over-screen">
+        <h1>Game Over</h1>
+        <p>Your Score: <span id="final-score">0</span></p>
+        <p class="desktop-hint">Press 'R' to Restart</p>
+        <p class="mobile-hint">点击屏幕重新开始</p>
+    </div>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="game.js"></script>
+</body>
+</html>
