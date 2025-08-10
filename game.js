@@ -434,7 +434,7 @@ class AudioManager {
         // 如果没有找到MP3文件，回退到程序化音乐
         setTimeout(() => {
             if (!this.loadedMusic) {
-                console.log('🎵 未找到bgm.mp3文件，使用程序化音乐');
+                console.log('🎵 未找到bgm.mp3文件，使用程序化音');
                 this._createProgrammaticMusic();
             }
         }, 2000);
